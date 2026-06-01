@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>FinanceSelfService - Banner Test Pages</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            font-size: 14px;
+            background: #f4f4f4;
+            color: #333;
+        }
+
+        /* ── Top nav bar ── */
+        .topbar {
+            background: #1a3a5c;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            height: 52px;
+        }
+        .topbar-left { display: flex; align-items: center; gap: 12px; }
+        .topbar-logo {
+            background: white;
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-weight: bold;
+            color: #1a3a5c;
+            font-size: 13px;
+        }
+        .topbar-title { font-size: 15px; font-weight: bold; }
+        .topbar-right { display: flex; align-items: center; gap: 16px; font-size: 13px; }
+        .topbar-user {
+            background: #2e7d32;
+            border-radius: 50%;
+            width: 32px; height: 32px;
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-size: 12px;
+        }
+
+        /* ── URL bar ── */
+        .urlbar {
+            background: #e8e8e8;
+            border-bottom: 1px solid #ccc;
+            padding: 6px 16px;
+            font-size: 12px;
+            color: #555;
+            font-family: monospace;
+        }
+
+        /* ── Tab switcher ── */
+        .tab-bar {
+            background: white;
+            border-bottom: 2px solid #1a3a5c;
+            padding: 0 24px;
+            display: flex;
+            gap: 0;
+        }
+        .tab {
+            padding: 12px 24px;
+            cursor: pointer;
+            font-size: 13px;
+            color: #555;
+            border-bottom: 3px solid transparent;
+            margin-bottom: -2px;
+        }
+        .tab.active {
+            color: #1a3a5c;
+            font-weight: bold;
+            border-bottom: 3px solid #1a3a5c;
+        }
+        .tab:hover { background: #f5f5f5; }
+
+        /* ── Test notice ── */
+        .test-notice {
+            background: #fff8e1;
+            border: 1px solid #ffcc02;
+            border-radius: 4px;
+            padding: 12px 16px;
+            margin: 16px 24px;
+            font-size: 13px;
+        }
+        .test-notice strong { color: #b8860b; }
+
+        /* ── Page views ── */
+        .page-view { display: none; }
+        .page-view.active { display: block; }
+
+        /* ════════════════════════════════
+           PAGE 1: Approve Documents
+        ════════════════════════════════ */
+        .breadcrumb {
+            background: white;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 24px;
+            font-size: 13px;
+        }
+        .breadcrumb a { color: #1a6ca8; text-decoration: none; }
+        .breadcrumb span { color: #555; margin: 0 6px; }
+
+        .main { padding: 24px; }
+        .page-title {
+            font-size: 22px;
+            font-weight: normal;
+            color: #1a3a5c;
+            margin-bottom: 20px;
+        }
+        .card {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .card-header {
+            padding: 12px 20px;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .card-header h2 { font-size: 16px; font-weight: bold; color: #1a3a5c; }
+        .card-body { padding: 16px 20px; }
+
+        .btn-another-query {
+            border: 1px solid #1a6ca8;
+            background: white;
+            color: #1a6ca8;
+            padding: 7px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .info-banner {
+            background: #e8f4fd;
+            border: 1px solid #b3d7f0;
+            border-radius: 4px;
+            padding: 12px 16px;
+            margin-bottom: 16px;
+            font-size: 13px;
+            color: #1a3a5c;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        .info-icon {
+            background: #1a6ca8;
+            color: white;
+            border-radius: 50%;
+            width: 20px; height: 20px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: bold;
+            flex-shrink: 0;
+        }
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        .section-header h2 { font-size: 16px; font-weight: bold; color: #1a3a5c; }
+        .count-badge {
+            background: #1a6ca8;
+            color: white;
+            border-radius: 50%;
+            width: 24px; height: 24px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: bold;
+        }
+        .doc-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        .doc-table thead tr { border-bottom: 2px solid #1a3a5c; }
+        .doc-table th {
+            padding: 10px 12px;
+            text-align: left;
+            font-weight: bold;
+            color: #1a3a5c;
+            white-space: nowrap;
+        }
+        .doc-table th .sort-icon { margin-left: 4px; opacity: 0.5; font-size: 10px; }
+        .doc-table td { padding: 12px 12px; border-bottom: 1px solid #eee; vertical-align: middle; }
+        .doc-table tbody tr:hover { background: #f9f9f9; }
+        .doc-number-link { color: #999; text-decoration: none; }
+        .doc-number-link:hover { text-decoration: underline; color: #1a6ca8; }
+        .history-btn { background: none; border: none; cursor: pointer; color: #555; font-size: 16px; padding: 4px 8px; }
+        .btn-disapprove {
+            border: 1px solid #1a6ca8; background: white; color: #1a6ca8;
+            padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 13px; margin-right: 6px;
+        }
+        .btn-approve {
+            background: #1a6ca8; color: white; border: none;
+            padding: 6px 14px; border-radius: 4px; cursor: pointer; font-size: 13px;
+        }
+
+        /* ════════════════════════════════
+           PAGE 2: Classic Invoice Detail
+        ════════════════════════════════ */
+        .inv-page { padding: 24px; background: white; min-height: 600px; }
+        .inv-title {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1a3a5c;
+            text-align: center;
+            margin-bottom: 24px;
+            letter-spacing: 2px;
+        }
+        .inv-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+        }
+        .inv-row {
+            display: contents;
+        }
+        .inv-label {
+            background: #f0f0f0;
+            padding: 7px 12px;
+            font-weight: bold;
+            font-size: 13px;
+            border-bottom: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+        }
+        .inv-value {
+            padding: 7px 12px;
+            font-size: 13px;
+            border-bottom: 1px solid #ddd;
+            border-right: 1px solid #ddd;
+        }
+        .inv-section-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #1a3a5c;
+            margin: 20px 0 10px 0;
+            border-bottom: 2px solid #1a3a5c;
+            padding-bottom: 4px;
+        }
+        .inv-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 16px; }
+        .inv-table th {
+            background: #1a3a5c; color: white;
+            padding: 8px 10px; text-align: left;
+        }
+        .inv-table td { padding: 8px 10px; border-bottom: 1px solid #eee; }
+        .inv-table tr:hover td { background: #f9f9f9; }
+        .inv-total {
+            text-align: right;
+            font-weight: bold;
+            font-size: 14px;
+            padding: 8px 0;
+            border-top: 2px solid #1a3a5c;
+        }
+        .inv-disclaimer {
+            font-size: 11px;
+            color: #888;
+            text-align: center;
+            margin-top: 30px;
+            border-top: 1px solid #ddd;
+            padding-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top navigation bar -->
+    <div class="topbar">
+        <div class="topbar-left">
+            <div class="topbar-logo">WOU</div>
+            <div class="topbar-title">Western Oregon University</div>
+        </div>
+        <div class="topbar-right">
+            <span>⚙</span>
+            <span>👤</span>
+            <span>Thomas Edward Litt...</span>
+            <div class="topbar-user">T</div>
+            <span style="background:#2e7d32;padding:3px 8px;border-radius:3px;font-size:12px;">School</span>
+        </div>
+    </div>
+
+    <!-- Simulated URL bar -->
+    <div class="urlbar" id="urlbar">
+        financessb-test.ec.wou.edu:8102/FinanceSelfService/ssb/approveDocuments#!/dashboard/list
+    </div>
+
+    <!-- Tab switcher -->
+    <div class="tab-bar">
+        <div class="tab active" onclick="showPage(1)">📋 Approve Documents List</div>
+        <div class="tab" onclick="showPage(2)">🧾 Classic Invoice Detail</div>
+        <div class="tab" onclick="showPage(3)">📑 Multiple Invoices</div>
+        <div class="tab" onclick="showPage(4)">📄 PDF Invoice Link</div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE 1: Approve Documents List
+    ══════════════════════════════════════ -->
+    <div id="page1" class="page-view active">
+
+        <div class="test-notice">
+            <strong>🧪 Test Page 1 - Approve Documents List:</strong>
+            Extension should detect <strong>I0591766</strong> (type INV)
+            and send <strong>0591766</strong> to DocStar (leading "I" stripped).
+        </div>
+
+        <div class="breadcrumb">
+            <a href="#">My Finance</a>
+            <span>•</span>
+            <a href="#">Approve Documents</a>
+        </div>
+
+        <div class="main">
+            <h1 class="page-title">Approve Documents</h1>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Queried Parameters</h2>
+                    <span>&#x2304;</span>
+                </div>
+                <div class="card-body">
+                    <button class="btn-another-query">Another Query</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="section-header">
+                        <h2>Approve Documents List</h2>
+                        <div class="count-badge">1</div>
+                    </div>
+                    <div class="info-banner">
+                        <div class="info-icon">i</div>
+                        <div>
+                            Click the document number link to view a document as a PDF in a new tab.
+                            Click the History option to display pending approvals, approval history,
+                            and any related documents. Click the Attachments icon to display a list
+                            of attachments if more than one, otherwise a new tab is opened to view
+                            a single attachment....
+                        </div>
+                        <span style="cursor:pointer;margin-left:auto;">&#x2304;</span>
+                    </div>
+                    <table class="doc-table">
+                        <thead>
+                            <tr>
+                                <th>Document <span class="sort-icon">⇅</span></th>
+                                <th>Document Type <span class="sort-icon">⇅</span></th>
+                                <th>Change Sequence <span class="sort-icon">⇅</span></th>
+                                <th>Submission <span class="sort-icon">⇅</span></th>
+                                <th>Originating User <span class="sort-icon">⇅</span></th>
+                                <th>Amount <span class="sort-icon">⇅</span></th>
+                                <th>Next Approver <span class="sort-icon">⇅</span></th>
+                                <th>NSF <span class="sort-icon">⇅</span></th>
+                                <th>Queue Type <span class="sort-icon">⇅</span></th>
+                                <th>History</th>
+                                <th>Disapprove</th>
+                                <th>Approve</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="#" class="doc-number-link">I0591766</a></td>
+                                <td>INV</td>
+                                <td>-</td>
+                                <td>0</td>
+                                <td>KINNAMAJ</td>
+                                <td>2,067.31</td>
+                                <td>Yes</td>
+                                <td>-</td>
+                                <td>DOC</td>
+                                <td><button class="history-btn" title="History">&#x1F552;</button></td>
+                                <td><button class="btn-disapprove">Disapprove</button></td>
+                                <td><button class="btn-approve">Approve</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE 2: Classic Invoice Detail
+    ══════════════════════════════════════ -->
+    <div id="page2" class="page-view">
+
+        <div class="test-notice">
+            <strong>🧪 Test Page 2 - Classic Invoice Detail:</strong>
+            Extension should detect <strong>Invoice Number I0591766</strong>
+            and send <strong>0591766</strong> to DocStar (leading "I" stripped).
+        </div>
+
+        <div class="inv-page">
+            <div class="inv-title">INVOICE</div>
+
+            <div class="inv-grid">
+                <div class="inv-label">Invoice Number</div>
+                <div class="inv-value">I0591766</div>
+
+                <div class="inv-label">Submission</div>
+                <div class="inv-value">0</div>
+
+                <div class="inv-label">Purchase Order</div>
+                <div class="inv-value">&nbsp;</div>
+
+                <div class="inv-label">Invoice Date</div>
+                <div class="inv-value">10/03/2025</div>
+
+                <div class="inv-label">Vendor Invoice</div>
+                <div class="inv-value">339865</div>
+
+                <div class="inv-label">Vendor</div>
+                <div class="inv-value">Organization for Education Technology &amp; Curriculum (V00004101)</div>
+
+                <div class="inv-label">Transaction Date</div>
+                <div class="inv-value">10/08/2025</div>
+
+                <div class="inv-label">Suspense</div>
+                <div class="inv-value">No</div>
+
+                <div class="inv-label">Address</div>
+                <div class="inv-value">LB 1249<br>PO Box 35142<br>Seattle WA 98124-5142</div>
+
+                <div class="inv-label">Payment Due</div>
+                <div class="inv-value">10/09/2025</div>
+
+                <div class="inv-label">Cancel Date</div>
+                <div class="inv-value">&nbsp;</div>
+
+                <div class="inv-label">&nbsp;</div>
+                <div class="inv-value">&nbsp;</div>
+
+                <div class="inv-label">Document Total</div>
+                <div class="inv-value">2,067.31</div>
+
+                <div class="inv-label">Open/Paid</div>
+                <div class="inv-value">O</div>
+
+                <div class="inv-label">&nbsp;</div>
+                <div class="inv-value">&nbsp;</div>
+
+                <div class="inv-label">Accounting Type</div>
+                <div class="inv-value">Document Level</div>
+
+                <div class="inv-label">Hold</div>
+                <div class="inv-value">N</div>
+
+                <div class="inv-label">&nbsp;</div>
+                <div class="inv-value">&nbsp;</div>
+
+                <div class="inv-label">Credit Memo</div>
+                <div class="inv-value">N</div>
+
+                <div class="inv-label">Collects Tax</div>
+                <div class="inv-value">Collects No Taxes</div>
+
+                <div class="inv-label">&nbsp;</div>
+                <div class="inv-value">&nbsp;</div>
+
+                <div class="inv-label">1099 Vendor</div>
+                <div class="inv-value">Y</div>
+
+                <div class="inv-label">Recurring</div>
+                <div class="inv-value">N</div>
+
+                <div class="inv-label">Discount Code</div>
+                <div class="inv-value">&nbsp;</div>
+            </div>
+
+            <div class="inv-section-title">Commodities</div>
+            <table class="inv-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Description</th>
+                        <th>U/M</th>
+                        <th>Tax Group</th>
+                        <th>Final Pay</th>
+                        <th>Approved</th>
+                        <th>Net Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>5 hrs Technical Consultant</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>No</td>
+                        <td>Other</td>
+                        <td>1,787.95</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>2 hrs Project Administrator</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>No</td>
+                        <td>Other</td>
+                        <td>279.36</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="inv-total">Total Commodities: 2,067.31</div>
+
+            <div class="inv-section-title">Accounting Distributions</div>
+            <table class="inv-table">
+                <thead>
+                    <tr>
+                        <th>Sequence</th>
+                        <th>Chart-Index-Fund-Orgn-Acct-Prog-Actv-Locn-Proj</th>
+                        <th>Bank Code</th>
+                        <th>NSF Suspense</th>
+                        <th>NSF Override</th>
+                        <th>Dist %</th>
+                        <th>Net Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>E- UCS918- 307426- 309000- 24507- 61050- - -</td>
+                        <td>B1</td>
+                        <td>No</td>
+                        <td>No</td>
+                        <td>100.00</td>
+                        <td>2,067.31</td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="inv-total">Total Accounting Distributions: 2,067.31</div>
+
+            <div class="inv-disclaimer">
+                DISCLAIMER - This Invoice PDF is restricted to internal use only.
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE 3: Multiple Invoices List
+    ══════════════════════════════════════ -->
+    <div id="page3" class="page-view">
+
+        <div class="test-notice">
+            <strong>🧪 Test Page 3 - Multiple Invoices:</strong>
+            Extension should detect <strong>4 invoices</strong> (I0595789, I0595880, I0595881, I0595882)
+            and send <strong>0595789 OR 0595880 OR 0595881 OR 0595882</strong> to DocStar.
+        </div>
+
+        <div class="breadcrumb">
+            <a href="#">My Finance</a>
+            <span>•</span>
+            <a href="#">Approve Documents</a>
+        </div>
+
+        <div class="main">
+            <h1 class="page-title">Approve Documents</h1>
+
+            <div class="card">
+                <div class="card-header">
+                    <h2>Queried Parameters</h2>
+                    <span>&#x2304;</span>
+                </div>
+                <div class="card-body">
+                    <button class="btn-another-query">Another Query</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="section-header">
+                        <h2>Approve Documents List</h2>
+                        <div class="count-badge">4</div>
+                    </div>
+                    <div class="info-banner">
+                        <div class="info-icon">i</div>
+                        <div>
+                            Click the document number link to view a document as a PDF in a new tab.
+                            Click the History option to display pending approvals, approval history,
+                            and any related documents. Click the Attachments icon to display a list
+                            of attachments if more than one, otherwise a new tab is opened to view
+                            a single attachment....
+                        </div>
+                        <span style="cursor:pointer;margin-left:auto;">&#x2304;</span>
+                    </div>
+                    <table class="doc-table">
+                        <thead>
+                            <tr>
+                                <th>Document <span class="sort-icon">⇅</span></th>
+                                <th>Document Type <span class="sort-icon">⇅</span></th>
+                                <th>Change Sequence <span class="sort-icon">⇅</span></th>
+                                <th>Submission <span class="sort-icon">⇅</span></th>
+                                <th>Originating User <span class="sort-icon">⇅</span></th>
+                                <th>Amount <span class="sort-icon">⇅</span></th>
+                                <th>Next Approver <span class="sort-icon">⇅</span></th>
+                                <th>NSF <span class="sort-icon">⇅</span></th>
+                                <th>Queue Type <span class="sort-icon">⇅</span></th>
+                                <th>History</th>
+                                <th>Disapprove</th>
+                                <th>Approve</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><a href="#" class="doc-link">I0595789</a></td>
+                                <td>INV</td>
+                                <td>-</td>
+                                <td>0</td>
+                                <td>KINNAMAJ</td>
+                                <td style="text-align:right;">34,632.70</td>
+                                <td>Yes</td>
+                                <td>-</td>
+                                <td>DOC</td>
+                                <td><button class="action-btn">🕒</button></td>
+                                <td><button class="btn-disapprove">Disapprove</button></td>
+                                <td><button class="btn-approve">Approve</button></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#" class="doc-link">I0595880</a></td>
+                                <td>INV</td>
+                                <td>-</td>
+                                <td>0</td>
+                                <td>KINNAMAJ</td>
+                                <td style="text-align:right;">3,452.34</td>
+                                <td>Yes</td>
+                                <td>-</td>
+                                <td>DOC</td>
+                                <td><button class="action-btn">🕒</button></td>
+                                <td><button class="btn-disapprove">Disapprove</button></td>
+                                <td><button class="btn-approve">Approve</button></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#" class="doc-link">I0595881</a></td>
+                                <td>INV</td>
+                                <td>-</td>
+                                <td>0</td>
+                                <td>KINNAMAJ</td>
+                                <td style="text-align:right;">1,000.00</td>
+                                <td>Yes</td>
+                                <td>-</td>
+                                <td>DOC</td>
+                                <td><button class="action-btn">🕒</button></td>
+                                <td><button class="btn-disapprove">Disapprove</button></td>
+                                <td><button class="btn-approve">Approve</button></td>
+                            </tr>
+                            <tr>
+                                <td><a href="#" class="doc-link">I0595882</a></td>
+                                <td>INV</td>
+                                <td>-</td>
+                                <td>0</td>
+                                <td>KINNAMAJ</td>
+                                <td style="text-align:right;">78.00</td>
+                                <td>Yes</td>
+                                <td>-</td>
+                                <td>DOC</td>
+                                <td><button class="action-btn">🕒</button></td>
+                                <td><button class="btn-disapprove">Disapprove</button></td>
+                                <td><button class="btn-approve">Approve</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ══════════════════════════════════════
+         PAGE 4: PDF Invoice Link
+    ══════════════════════════════════════ -->
+    <div id="page4" class="page-view">
+
+        <div class="test-notice">
+            <strong>🧪 Test Page 4 - PDF Invoice Link:</strong>
+            Extension should detect invoice <strong>I0591766</strong> from the URL parameter
+            and send <strong>0591766</strong> to DocStar. This simulates clicking a PDF link in Banner.
+        </div>
+
+        <div class="breadcrumb">
+            <a href="#">My Finance</a>
+            <span>•</span>
+            <a href="#">Budget View Documents</a>
+        </div>
+
+        <div class="main">
+            <h1 class="page-title">View Invoice as PDF</h1>
+
+            <div class="card">
+                <div class="card-body" style="text-align: center; padding: 60px 20px;">
+                    <div style="font-size: 64px; margin-bottom: 20px;">📄</div>
+                    <h2 style="color: #1a3a5c; margin-bottom: 20px;">Invoice I0591766</h2>
+                    <p style="color: #666; margin-bottom: 30px;">
+                        Click the button below to view this invoice as a PDF.<br>
+                        The extension will detect the invoice number from the URL.
+                    </p>
+                    
+                    <a href="https://financessb-test.ec.wou.edu:8102/FinanceSelfService/ssb/budgetViewDocumentAsPdf/viewPdf?docCode=I0591766&docType=invoice&submissionNumber=0" 
+                       target="_blank" 
+                       rel="noopener noreferrer" 
+                       style="display: inline-block; padding: 12px 30px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px; font-size: 16px; font-weight: 600; transition: background-color 0.3s;"
+                       onmouseover="this.style.backgroundColor='#0056b3'"
+                       onmouseout="this.style.backgroundColor='#007bff'">
+                        View PDF Invoice
+                    </a>
+
+                    <div style="margin-top: 40px; padding: 20px; background: #f9fafb; border-radius: 8px; text-align: left;">
+                        <h3 style="color: #1a3a5c; margin-bottom: 10px; font-size: 16px;">How to test:</h3>
+                        <ol style="color: #666; line-height: 1.8; margin-left: 20px;">
+                            <li>Click the "View PDF Invoice" button above</li>
+                            <li>A new tab will open with the URL containing <code>docCode=I0591766</code></li>
+                            <li>Click the extension icon on that new page</li>
+                            <li>Extension should detect invoice <strong>0591766</strong> from the URL</li>
+                            <li>Click "Open in DocStar" to verify it works</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const urls = {
+            1: 'financessb-test.ec.wou.edu:8102/FinanceSelfService/ssb/approveDocuments#!/dashboard/list',
+            2: 'banweb.wou.edu/pls/prod/bwfkginv.P_DisplayInvoice?invoice=I0591766',
+            3: 'financessb-prod.ec.wou.edu/FinanceSelfService/ssb/approveDocuments#!/dashboard/list',
+            4: 'financessb-test.ec.wou.edu:8102/FinanceSelfService/ssb/budgetViewDocumentAsPdf'
+        };
+        const tabs = document.querySelectorAll('.tab');
+
+        function showPage(num) {
+            document.querySelectorAll('.page-view').forEach(p => p.classList.remove('active'));
+            tabs.forEach(t => t.classList.remove('active'));
+            document.getElementById('page' + num).classList.add('active');
+            tabs[num - 1].classList.add('active');
+            document.getElementById('urlbar').textContent = urls[num];
+        }
+    </script>
+
+</body>
+</html>
