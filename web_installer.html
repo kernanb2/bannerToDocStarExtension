@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banner to DocStar Extension - Install</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 18px;
+            opacity: 0.9;
+        }
+        
+        .content {
+            padding: 40px;
+        }
+        
+        .platform-choice {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+            justify-content: center;
+        }
+        
+        .platform-card {
+            flex: 1;
+            max-width: 350px;
+            padding: 30px;
+            border: 3px solid #e5e7eb;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .platform-card:hover {
+            border-color: #3b82f6;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .platform-icon {
+            font-size: 64px;
+            margin-bottom: 15px;
+        }
+        
+        .platform-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+        
+        .platform-desc {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        
+        .download-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            width: 100%;
+        }
+        
+        .download-btn:hover {
+            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        }
+        
+        .download-btn:disabled {
+            background: #9ca3af;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .instructions-section {
+            display: none;
+            margin-top: 40px;
+        }
+        
+        .instructions-section.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .step {
+            background: #f9fafb;
+            border-left: 5px solid #3b82f6;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: #3b82f6;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-size: 20px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .step-title {
+            font-size: 22px;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 15px;
+        }
+        
+        .step-content {
+            margin-left: 55px;
+            color: #4b5563;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+        
+        .url-box {
+            background: #1f2937;
+            color: #10b981;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 18px;
+            margin: 15px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+        }
+        
+        .url-box:hover {
+            background: #374151;
+        }
+        
+        .url-box::after {
+            content: '📋 Click to copy';
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: #9ca3af;
+            font-family: Arial;
+        }
+        
+        .path-box {
+            background: #fef3c7;
+            border: 2px solid #f59e0b;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 16px;
+            margin: 15px 0;
+            cursor: pointer;
+            word-break: break-all;
+        }
+        
+        .path-box::before {
+            content: '📂 Installation Path (click to copy):';
+            display: block;
+            font-family: Arial;
+            font-size: 12px;
+            color: #92400e;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        
+        .alert {
+            background: #dbeafe;
+            border-left: 5px solid #3b82f6;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            font-size: 15px;
+        }
+        
+        .alert strong {
+            color: #1e40af;
+        }
+        
+        .alert.success {
+            background: #d1fae5;
+            border-left-color: #10b981;
+        }
+        
+        .alert.success strong {
+            color: #065f46;
+        }
+        
+        .alert.warning {
+            background: #fef3c7;
+            border-left-color: #f59e0b;
+        }
+        
+        .alert.warning strong {
+            color: #92400e;
+        }
+        
+        .success {
+            background: #d1fae5;
+            border-left: 5px solid #10b981;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-top: 30px;
+        }
+        
+        .success-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        .success h2 {
+            color: #065f46;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .copy-notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s;
+            z-index: 1000;
+        }
+        
+        .copy-notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 15px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #3b82f6, #10b981);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .browser-choice {
+            display: flex;
+            gap: 20px;
+            margin: 30px 0;
+            justify-content: center;
+        }
+        
+        .browser-btn {
+            flex: 1;
+            max-width: 200px;
+            padding: 20px;
+            border: 3px solid #e5e7eb;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+            background: white;
+        }
+        
+        .browser-btn:hover {
+            border-color: #3b82f6;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .browser-btn.active {
+            border-color: #3b82f6;
+            background: #eff6ff;
+        }
+        
+        .browser-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+        
+        .browser-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1f2937;
+        }
+        
+        .test-link {
+            display: inline-block;
+            background: #f59e0b;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+        
+        .test-link:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📦 Banner to DocStar Extension</h1>
+            <p>Western Oregon University</p>
+        </div>
+        
+        <div class="content">
+            <!-- Platform Selection -->
+            <div id="platform-selection">
+                <h2 style="text-align: center; margin-bottom: 30px; color: #1f2937;">
+                    Choose Your Operating System
+                </h2>
+                
+                <div class="alert warning" style="margin-bottom: 30px;">
+                    <strong>⚠️ IMPORTANT:</strong> Your browser may block some downloads (.js, .bat, .sh files) as potentially unsafe. 
+                    <strong>You must click "Keep" for each blocked file</strong> to complete the installation. 
+                    This is normal - these files are safe and required for the extension to work.
+                </div>
+                
+                <div class="platform-choice">
+                    <div class="platform-card">
+                        <div class="platform-icon">🪟</div>
+                        <div class="platform-name">Windows</div>
+                        <div class="platform-desc">For Windows 10/11 with Chrome or Edge</div>
+                        <button class="download-btn" onclick="downloadExtension('windows')">
+                            Download for Windows
+                        </button>
+                    </div>
+                    
+                    <div class="platform-card">
+                        <div class="platform-icon">🍎</div>
+                        <div class="platform-name">macOS</div>
+                        <div class="platform-desc">For Mac with Chrome or Edge</div>
+                        <button class="download-btn" onclick="downloadExtension('mac')">
+                            Download for Mac
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="alert">
+                    <strong>ℹ️ What happens when you click download:</strong>
+                    <ul style="margin-top: 10px; margin-left: 20px;">
+                        <li>Extension files will be downloaded to your computer</li>
+                        <li>Files will be placed in the BannerExtension folder</li>
+                        <li>Step-by-step installation instructions will appear below</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- Windows Instructions -->
+            <div id="windows-instructions" class="instructions-section">
+                <div class="alert warning">
+                    <strong>📥 Files Downloaded!</strong> Check your Downloads folder.
+                </div>
+                
+                <div class="alert" style="background: #fef3c7; border-left-color: #f59e0b;">
+                    <strong>⚠️ Did your browser block some downloads?</strong><br>
+                    Windows browsers often block .js, .bat files as "potentially unsafe."<br>
+                    <strong>Click "Keep" on each blocked file</strong> - they are safe and needed for the extension.
+                </div>
+                
+                <div class="step">
+                    <div class="step-title">
+                        <span class="step-number">1</span>
+                        Run the Move Script
+                    </div>
+                    <div class="step-content">
+                        <strong>Go to your Downloads folder</strong> and double-click:
+                        <div class="path-box" style="cursor: default; background: #1f2937; color: white;">
+                            move_files.bat
+                        </div>
+                        This will automatically move all extension files to <code>C:\BannerExtension</code>
+                        <div class="alert">
+                            <strong>⚠️ Important:</strong> You must run the move_files.bat script before proceeding. The extension won't work until files are moved to C:\BannerExtension.
+                        </div>
+                    </div>
+                </div>
+                
+                <h2 style="text-align: center; margin: 30px 0; color: #1f2937;">
+                    After running move_files.bat, choose your browser:
+                </h2>
+                
+                <div class="browser-choice">
+                    <div class="browser-btn" onclick="selectBrowser('chrome', 'windows')">
+                        <div class="browser-icon">🌐</div>
+                        <div class="browser-name">Chrome</div>
+                    </div>
+                    <div class="browser-btn" onclick="selectBrowser('edge', 'windows')">
+                        <div class="browser-icon">🔷</div>
+                        <div class="browser-name">Edge</div>
+                    </div>
+                </div>
+                
+                <div id="chrome-steps-windows" style="display:none;">
+                    <div class="step">
+                        <div class="step-title">
+                            <span class="step-number">2</span>
+                            Open Chrome Extensions Page
+                        </div>
+                        <div class="step-content">
+                            Copy this URL and paste it into Chrome's address bar:
+                            <div class="url-box" onclick="copyText('chrome://extensions/')">
+                                chrome://extensions/
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-title">
+                            <span class="step-number">3</span>
+                            Enable Developer Mode
+                        </div>
+                        <div class="step-content">
+                            Toggle ON <strong>"Developer mode"</strong> in the top-right corner.
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-title">
+                            <span class="step-number">4</span>
+                            Load the Extension
+                        </div>
+                        <div class="step-content">
+                            Click <strong>"Load unpacked"</strong> and paste this path:
+                            <div class="path-box" onclick="copyText('C:\\BannerExtension')">
+                                C:\BannerExtension
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-title">
+                            <span class="step-number">5</span>
+                            Enable File Access
+                        </div>
+                        <div class="step-content">
+                            Click <strong>"Details"</strong> on the extension, then toggle ON <strong>"Allow access to file URLs"</strong>.
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-title">
+                            <span class="step-number">6</span>
+                            Pin to Toolbar
+                        </div>
+                        <div class="step-content">
+                            Click the <strong>puzzle piece icon</strong> 🧩 in Chrome's toolbar (top-right), then click the <strong>pin icon</strong> 📌 next to "Banner to DocStar" to keep it visible in your toolbar.
+                        </div>
+                    </div>
+                    
+                    <div class="success">
+                        <div class="success-icon">🎉</div>
+                        <h2>Installation Complete!</h2>
+                        <p style="color: #065f46; margin-top: 10px;">
+                            The extension is ready to use in Chrome.
+                        </p>
+                        <div class="alert" style="margin-top: 20px;">
+                            <strong>📌 First Time Using the Extension?</strong><br>
+                            The first time you click the extension, you'll need to:<br>
+                            1. Login to DocStar when prompted<br>
+                            2. <strong>Quickly close the welcome popup</strong> within 2 seconds (appears after login)<br>
+                            3. The invoice will appear automatically<br>
+                            <br>
+                            After the first time, the extension works instantly with no popup!
+                        </div>
+                        <a href="https://bannerextension.wou.education/BannerExtensions/test-banner-page.html" target="_blank" class="test-link">
+                            🧪 Open Test Page
+                        </a>
+                    </div>
+                </div>
+                
+                <div id="edge-steps-windows" style="display:none;">
+                    <div class="step">
+                        <div class="step-title">
+                            <span class="step-number">2</span>
+                            Open Edge Extensions Page
+                        </div>
+                        <div class="step-content">
+                            Copy this URL and paste it into Edge's address bar:
+                            <div class="url-box" onclick="copyText('edge://extensions/')">
+                                edge://extensions/
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-title">
+                            <span class="step-number">3</span>
+                            Enable Developer Mode
+                        </div>
+                        <div class="step-content">
+                            Toggle ON <strong>"Developer mode"</strong> in the bottom-left corner.
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-title">
+                            <span class="step-number">4</span>
+                            Load the Extension
+                        </div>
+                        <div class="step-content">
+                            Click <strong>"Load unpacked"</strong> and paste this path:
+                            <div class="path-box" onclick="copyText('C:\\BannerExtension')">
+                                C:\BannerExtension
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-title">
+                            <span class="step-number">5</span>
+                            Enable File Access
+                        </div>
+                        <div class="step-content">
+                            Click <strong>"Details"</strong> on the extension, then toggle ON <strong>"Allow access to file URLs"</strong>.
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-title">
+                            <span class="step-number">6</span>
+                            Pin to Toolbar
+                        </div>
+                        <div class="step-content">
+                            Click the <strong>puzzle piece icon</strong> 🧩 in Edge's toolbar (top-right), then click the <strong>pin icon</strong> 📌 next to "Banner to DocStar" to keep it visible in your toolbar.
+                        </div>
+                    </div>
+                    
+                    <div class="success">
+                        <div class="success-icon">🎉</div>
+                        <h2>Installation Complete!</h2>
+                        <p style="color: #065f46; margin-top: 10px;">
+                            The extension is ready to use in Edge.
+                        </p>
+                        <div class="alert" style="margin-top: 20px;">
+                            <strong>📌 First Time Using the Extension?</strong><br>
+                            The first time you click the extension, you'll need to:<br>
+                            1. Login to DocStar when prompted<br>
+                            2. <strong>Quickly close the welcome popup</strong> within 2 seconds (appears after login)<br>
+                            3. The invoice will appear automatically<br>
+                            <br>
+                            After the first time, the extension works instantly with no popup!
+                        </div>
+                        <a href="https://bannerextension.wou.education/BannerExtensions/test-banner-page.html" target="_blank" class="test-link">
+                            🧪 Open Test Page
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mac Instructions -->
+            <div id="mac-instructions" class="instructions-section">
+                <div class="alert warning">
+                    <strong>📥 Files Downloaded!</strong> Check your Downloads folder.
+                </div>
+                
+                <div class="alert" style="background: #fef3c7; border-left-color: #f59e0b;">
+                    <strong>⚠️ Did your browser block some downloads?</strong><br>
+                    Safari/Chrome may block .js, .sh files as "potentially unsafe."<br>
+                    <strong>Click "Keep" or "Allow" on each blocked file</strong> - they are safe and needed for the extension.
+                </div>
+                
+                <div class="step">
+                    <div class="step-title">
+                        <span class="step-number">1</span>
+                        Run the Move Script
+                    </div>
+                    <div class="step-content">
+                        <strong>Option A - Terminal (Recommended):</strong>
+                        <ol style="margin: 10px 0 10px 20px; line-height: 1.8;">
+                            <li>Open <strong>Terminal</strong> (in Applications → Utilities)</li>
+                            <li>Type: <code style="background: #f3f4f6; padding: 2px 6px; border-radius: 3px;">bash ~/Downloads/move_files.sh</code></li>
+                            <li>Press Enter</li>
+                        </ol>
+                        
+                        <strong>Option B - Finder (if Terminal doesn't work):</strong>
+                        <ol style="margin: 10px 0 10px 20px; line-height: 1.8;">
+                            <li>Go to your Downloads folder</li>
+                            <li>Right-click <strong>move_files.sh</strong></li>
+                            <li>Choose "Open With" → "Terminal"</li>
+                        </ol>
+                        
+                        <div class="alert">
+                            <strong>⚠️ Important:</strong> The script will automatically move all extension files to <code>~/BannerExtension</code>. Don't proceed to the next step until this completes.
+                        </div>
+                    </div>
+                </div>
+                
+                <h2 style="text-align: center; margin: 30px 0; color: #1f2937;">
+                    After running move_files.sh, choose your browser:
+                </h2>
+                
+                <div class="browser-choice">
+                    <div class="browser-btn" onclick="selectBrowser('chrome', 'mac')">
+                        <div class="browser-icon">🌐</div>
+                        <div class="browser-name">Chrome</div>
+                    </div>
+                    <div class="browser-btn" onclick="selectBrowser('edge', 'mac')">
+                        <div class="browser-icon">🔷</div>
+                        <div class="browser-name">Edge</div>
+                    </div>
+                </div>
+                
+                <div id="chrome-steps-mac" style="display:none;">
+                    <div class="step">
+                        <div class="step-title">
+                            <span class="step-number">2</span>
+                            Open Chrome Extensions Page
+                        </div>
+                        <div class="step-content">
+                            Copy this URL and paste it into Chrome's address bar:
+                            <div class="url-box" onclick="copyText('chrome://extensions/')">
+                                chrome://extensions/
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-title">
+                            <span class="step-number">3</span>
+                            Enable Developer Mode
+                        </div>
+                        <div class="step-content">
+                            Toggle ON <strong>"Developer mode"</strong> in the top-right corner.
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-title">
+                            <span class="step-number">4</span>
+                            Load the Extension
+                        </div>
+                        <div class="step-content">
+                            Click <strong>"Load unpacked"</strong> and navigate to:
+                            <div class="path-box" onclick="copyText('~/BannerExtension')">
+                                ~/BannerExtension
+                            </div>
+                            <div class="alert warning">
+                                <strong>💡 Mac Tip:</strong> Press <kbd>Cmd+Shift+G</kbd> in the folder browser, paste the path above, and press Enter.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-title">
+                            <span class="step-number">5</span>
+                            Enable File Access
+                        </div>
+                        <div class="step-content">
+                            Click <strong>"Details"</strong> on the extension, then toggle ON <strong>"Allow access to file URLs"</strong>.
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-title">
+                            <span class="step-number">6</span>
+                            Pin to Toolbar
+                        </div>
+                        <div class="step-content">
+                            Click the <strong>puzzle piece icon</strong> 🧩 in Chrome's toolbar (top-right), then click the <strong>pin icon</strong> 📌 next to "Banner to DocStar" to keep it visible in your toolbar.
+                        </div>
+                    </div>
+                    
+                    <div class="success">
+                        <div class="success-icon">🎉</div>
+                        <h2>Installation Complete!</h2>
+                        <p style="color: #065f46; margin-top: 10px;">
+                            The extension is ready to use in Chrome.
+                        </p>
+                        <div class="alert" style="margin-top: 20px;">
+                            <strong>📌 First Time Using the Extension?</strong><br>
+                            The first time you click the extension, you'll need to:<br>
+                            1. Login to DocStar when prompted<br>
+                            2. <strong>Quickly close the welcome popup</strong> within 2 seconds (appears after login)<br>
+                            3. The invoice will appear automatically<br>
+                            <br>
+                            After the first time, the extension works instantly with no popup!
+                        </div>
+                        <a href="https://bannerextension.wou.education/BannerExtensions/test-banner-page.html" target="_blank" class="test-link">
+                            🧪 Open Test Page
+                        </a>
+                    </div>
+                </div>
+                
+                <div id="edge-steps-mac" style="display:none;">
+                    <div class="step">
+                        <div class="step-title">
+                            <span class="step-number">2</span>
+                            Open Edge Extensions Page
+                        </div>
+                        <div class="step-content">
+                            Copy this URL and paste it into Edge's address bar:
+                            <div class="url-box" onclick="copyText('edge://extensions/')">
+                                edge://extensions/
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-title">
+                            <span class="step-number">3</span>
+                            Enable Developer Mode
+                        </div>
+                        <div class="step-content">
+                            Toggle ON <strong>"Developer mode"</strong> in the bottom-left corner.
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-title">
+                            <span class="step-number">4</span>
+                            Load the Extension
+                        </div>
+                        <div class="step-content">
+                            Click <strong>"Load unpacked"</strong> and navigate to:
+                            <div class="path-box" onclick="copyText('~/BannerExtension')">
+                                ~/BannerExtension
+                            </div>
+                            <div class="alert warning">
+                                <strong>💡 Mac Tip:</strong> Press <kbd>Cmd+Shift+G</kbd> in the folder browser, paste the path above, and press Enter.
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-title">
+                            <span class="step-number">5</span>
+                            Enable File Access
+                        </div>
+                        <div class="step-content">
+                            Click <strong>"Details"</strong> on the extension, then toggle ON <strong>"Allow access to file URLs"</strong>.
+                        </div>
+                    </div>
+                    
+                    <div class="step">
+                        <div class="step-title">
+                            <span class="step-number">6</span>
+                            Pin to Toolbar
+                        </div>
+                        <div class="step-content">
+                            Click the <strong>puzzle piece icon</strong> 🧩 in Edge's toolbar (top-right), then click the <strong>pin icon</strong> 📌 next to "Banner to DocStar" to keep it visible in your toolbar.
+                        </div>
+                    </div>
+                    
+                    <div class="success">
+                        <div class="success-icon">🎉</div>
+                        <h2>Installation Complete!</h2>
+                        <p style="color: #065f46; margin-top: 10px;">
+                            The extension is ready to use in Edge.
+                        </p>
+                        <div class="alert" style="margin-top: 20px;">
+                            <strong>📌 First Time Using the Extension?</strong><br>
+                            The first time you click the extension, you'll need to:<br>
+                            1. Login to DocStar when prompted<br>
+                            2. <strong>Quickly close the welcome popup</strong> within 2 seconds (appears after login)<br>
+                            3. The invoice will appear automatically<br>
+                            <br>
+                            After the first time, the extension works instantly with no popup!
+                        </div>
+                        <a href="https://bannerextension.wou.education/BannerExtensions/test-banner-page.html" target="_blank" class="test-link">
+                            🧪 Open Test Page
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="copy-notification" id="notification">
+        ✓ Copied to clipboard!
+    </div>
+    
+    <script>
+        // Web server base URL
+        const WEBSERVER_URL = 'https://bannerextension.wou.education/BannerExtensions';
+        
+        const files = [
+            'manifest.json',
+            'background.js',
+            'content.js',
+            'popup.html',
+            'popup.js',
+            'icon16.png',
+            'icon48.png',
+            'icon128.png'
+        ];
+        
+        async function downloadExtension(platform) {
+            const btn = event.target;
+            btn.disabled = true;
+            btn.textContent = 'Downloading...';
+            
+            try {
+                // Download extension files
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    console.log(`Downloading: ${WEBSERVER_URL}/${file}`);
+                    const response = await fetch(`${WEBSERVER_URL}/${file}`);
+                    
+                    if (!response.ok) {
+                        throw new Error(`Failed to download ${file}: ${response.status} ${response.statusText}`);
+                    }
+                    
+                    const blob = await response.blob();
+                    
+                    // Create download link
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = file;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                    
+                    await new Promise(resolve => setTimeout(resolve, 300));
+                }
+                
+                // Download the appropriate move script
+                const scriptFile = platform === 'windows' ? 'move_files.bat' : 'move_files.sh';
+                console.log(`Downloading: ${WEBSERVER_URL}/${scriptFile}`);
+                const scriptResponse = await fetch(`${WEBSERVER_URL}/${scriptFile}`);
+                
+                if (!scriptResponse.ok) {
+                    throw new Error(`Failed to download ${scriptFile}: ${scriptResponse.status} ${scriptResponse.statusText}`);
+                }
+                
+                const scriptBlob = await scriptResponse.blob();
+                const scriptUrl = window.URL.createObjectURL(scriptBlob);
+                const scriptLink = document.createElement('a');
+                scriptLink.href = scriptUrl;
+                scriptLink.download = scriptFile;
+                document.body.appendChild(scriptLink);
+                scriptLink.click();
+                document.body.removeChild(scriptLink);
+                window.URL.revokeObjectURL(scriptUrl);
+                
+                // Show instructions
+                document.getElementById('platform-selection').style.display = 'none';
+                document.getElementById(`${platform}-instructions`).classList.add('active');
+                
+                // Scroll to instructions
+                setTimeout(() => {
+                    document.querySelector('.instructions-section.active').scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'start' 
+                    });
+                }, 100);
+                
+            } catch (error) {
+                console.error('Download error:', error);
+                alert(`Download failed: ${error.message}\n\nPlease try again or contact IT support.`);
+                btn.disabled = false;
+                btn.textContent = platform === 'windows' ? 'Download for Windows' : 'Download for Mac';
+            }
+        }
+        
+        function selectBrowser(browser, platform) {
+            // Update button states
+            document.querySelectorAll('.browser-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            // Hide all browser steps for this platform
+            document.querySelectorAll(`#${platform}-instructions > div[id$='-steps-${platform}']`).forEach(steps => {
+                steps.style.display = 'none';
+            });
+            
+            // Show selected browser steps
+            document.getElementById(`${browser}-steps-${platform}`).style.display = 'block';
+            
+            // Scroll to steps
+            setTimeout(() => {
+                document.getElementById(`${browser}-steps-${platform}`).scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'start' 
+                });
+            }, 100);
+        }
+        
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                showNotification();
+            });
+        }
+        
+        function showNotification() {
+            const notification = document.getElementById('notification');
+            notification.classList.add('show');
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
